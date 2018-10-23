@@ -16,3 +16,17 @@
 
 Для получения доступа к приложению, необходима авторизация.
 Результаты всех игр необходимо сохранять в базе.
+
+## Установка
+
+1. Установить pipenv - `pip install pipenv`
+2. Установить python пакеты `pipenv install`
+3. Установить npm пакеты `cd frontend && npm i`
+4. Забилдить React `npm run build`
+5. Создать PostgreSQL базу:
+    * Name `wemyit-test`
+    * User `admin`
+    * Password `admin`
+6. Сделать миграцию в Django `cd .. && pipenv run python manage.py migrate`
+7. Запустить локально `pipenv run python manage.py runserver`
+8. Перейти на http://localhost:8000
