@@ -3,11 +3,20 @@ from django.contrib.auth.decorators import login_required
 from core.forms import StyledUserCreationForm
 from django.contrib.auth import authenticate, login
 
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 
-@login_required(login_url='/login/')
+
 def index(request):
     """Main React app"""
     return render(request, 'index.html')
+
+
+@csrf_exempt
+@api_view(["GET"])
+def get_user(request):
+    return Response({'user': request.user.username})
 
 
 def signup(request):
