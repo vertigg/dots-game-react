@@ -7,11 +7,11 @@ from core.forms import StyledAuthenticationForm
 app_name = 'core'
 api_patterns = [
     url(r'^api/login$', rest_views.obtain_auth_token),
-    url(r'^api/user$', views.get_user)
+    url(r'^api/user$', views.get_user),
+    url(r'^api/signup$', views.signup, name='signup'),
 ]
 
 urlpatterns = [
-    url('^signup/$', views.signup, name='signup'),
     url('^$', views.index, name='react_app'),
 ]
 

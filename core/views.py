@@ -1,11 +1,15 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from core.forms import StyledUserCreationForm
 from django.contrib.auth import authenticate, login
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-from rest_framework.decorators import api_view
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
+
+from core.forms import StyledUserCreationForm
+from core.serializers import UserSerializer
 
 
 def index(request):
@@ -19,16 +23,14 @@ def get_user(request):
     return Response({'user': request.user.username})
 
 
+@api_view(['POST'])
+@permission_classes((AllowAny,))
 def signup(request):
-    if request.method == 'POST':
-        form = StyledUserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('core:react_app')
+    serialized = UserSerializer(data=request.data)
+    if serialized.is_valid():
+        serialized.save()
+        created_user = User.objects.get(username=request.data['username'])
+        token = created_user.auth_token.key
+        return Response({"token": token}, status=status.HTTP_201_CREATED)
     else:
-        form = StyledUserCreationForm()
-    return render(request, 'registration/signup.html', {'form': form})
+        return Response({'error': serialized.errors}, status=status.HTTP_400_BAD_REQUEST)

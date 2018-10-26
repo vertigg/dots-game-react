@@ -1,13 +1,11 @@
 import React from 'react';
 
-class Intersection extends React.Component{
-    render(){
-        var style = {
-        }
-        return(
-            <div className="square" style={style}>{this.props.index}</div>
-        );
-    }
+class Intersection extends React.Component {
+  render() {
+    return (
+        <div className="square">X</div>
+    );
+  }
 }
 
 export default Intersection;
