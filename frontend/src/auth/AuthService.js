@@ -1,60 +1,73 @@
-import { authHeader } from './Header';
+import { setToken, removeToken } from '../actions';
+import authHeader from './Header';
+import { store } from '../store';
 
-function login(username, password){
-    const requestOptions = {
-        method: 'post',
-        headers: {
-            'Content-Type': 'application/json'
-          },
-        body: JSON.stringify({username, password})
-    };
-    return fetch(`http://localhost:8000/api/login`, requestOptions, )
-        .then(handleResponse)
-        .then(token => {
-            if (token){
-                localStorage.setItem('user', JSON.stringify(token))
-            }
-            return token;
-        });
+
+function logout() {
+  store.dispatch(removeToken());
 }
 
-function logout(){
-    localStorage.removeItem('user');
-}
-
-function get_nickname(){
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    }
-    return fetch('http://localhost:8000/api/user', requestOptions).then(handleResponse)
+function login(username, password) {
+  const requestOptions = {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password }),
+  };
+  return fetch('/api/login', requestOptions)
+    .then((response) => {
+      if (response.status === 400 || response.status === 401) {
+        throw new Error('Bad response from server: ' + response.status);
+      }
+      return response.text();
+    })
+    .then((response) => {
+      const data = JSON.parse(response);
+      store.dispatch(setToken(data.token));
+    })
+    .catch(() => {
+      throw new Error("Can't reach server");
+    });
 }
 
 function handleResponse(response) {
-    return response.text().then(text =>{
-        const data = JSON.parse(text);
-        if (!response.ok){
-            if (response.status === 401 || response.status === 400) {
-                // auto logout if 401 response returned from api
-                console.error(data)
-                if (response.status === 401) { 
-                    logout();
-                    window.location.reload(true);
-                }
-            }
-            const error = data.text || response.statusText;
-            return Promise.reject(error)
-        }
-        return data;
+  return response.text().then((text) => {
+    const data = JSON.parse(text);
+    if (!response.ok) {
+      if (response.status === 400) {
+        throw new Error('Invalid credentials');
+      }
+      if (response.status === 401) {
+        throw new Error('Unauthorized');
+      }
+      const error = response.status;
+      return Promise.reject(error);
+    }
+    return data;
+  });
+}
+
+export function loggedIn() {
+  return store.getState().token !== null;
+}
+
+function getUserInfo() {
+  const requestOptions = {
+    method: 'GET',
+    headers: authHeader(),
+  };
+  return fetch('/api/user', requestOptions)
+    .then(handleResponse)
+    .catch(() => {
+      logout();
+      window.location.reload();
     });
 }
 
 // todo
-function handleSignup(response){}
-
+// function handleSignup(response){}
 
 export const authService = {
-    login,
-    logout, 
-    get_nickname
+  login,
+  logout,
+  getUserInfo,
 };

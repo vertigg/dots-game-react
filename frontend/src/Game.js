@@ -15,7 +15,7 @@ class Game extends React.Component {
     };
 
     componentDidMount(){
-        authService.get_nickname().then(user => this.setState({user}))
+        authService.getUserInfo().then(user => this.setState({user}))
     }
 
     render(){

@@ -23,13 +23,15 @@ class LoginForm extends React.Component {
         return;
     }
     this.setState({loading: true});
+
     authService.login(username, password)
-        .then(
-            user => {
-                this.props.history.push({ pathname: "/" });
-            },
-            error => this.setState({ error, loading: false })
-        );
+      .then((token) => {
+        this.props.history.push({ pathname: "/" });
+      },
+      error => {
+        console.log(error)
+        this.setState({error: error.message})
+      });
   }
 
   handleChange = e => {
@@ -39,7 +41,7 @@ class LoginForm extends React.Component {
   };
 
   render() {
-      const {username, password, loading, submitted, error } = this.state
+      const {username, password, submitted, error } = this.state
     return (
         <div className="container login-centered col-sm-3 col-xs-6 mt-5">
         <h1 className="display-4 text-center">Login</h1>
