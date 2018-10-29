@@ -13,3 +13,24 @@ export function removeToken() {
     data: null,
   };
 }
+
+export function switchPlayer() {
+  return {
+    type: actionTypes.SWITCH_PLAYER,
+    data: 0 ? 1 : 0,
+  };
+}
+
+export function createBoard(data) {
+  return {
+    type: actionTypes.CREATE_BOARD,
+    data,
+  };
+}
+
+export function updateBoard(data) {
+  return {
+    type: actionTypes.UPDATE_BOARD,
+    data,
+  };
+}

@@ -1,20 +1,21 @@
 body {
   margin: 0;
   padding: 0;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-.login-centered{
+.login-centered {
   margin-top: 15%;
 }
 
 .form-alert {
   position: absolute;
-  padding: .75rem 1.25rem;
+  padding: 0.75rem 1.25rem;
   margin-bottom: 1rem;
   border: 1px solid transparent;
-  border-radius: .25rem;
+  border-radius: 0.25rem;
 }
 
 .user-form {
@@ -22,17 +23,18 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-ol, ul {
-  padding-left: 30px;
+ol,
+ul {
+  padding-left: 20px;
 }
 
 .board-row:after {
   clear: both;
-  content: "";
+  content: '';
   display: table;
 }
 
@@ -40,18 +42,80 @@ ol, ul {
   margin-bottom: 10px;
 }
 
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 12px;
-  line-height: 34px;
-  height: 30px;
+.board {
+  line-height: 0rem;
+  background: repeat-linear-gradient(
+        90deg,
+        transparent calc(50% - 1px),
+        #000000,
+        transparent calc(50% + 1px)
+      )
+      bottom,
+    linear-gradient(
+        180deg,
+        transparent calc(50% - 1px),
+        #000000,
+        transparent calc(50% + 1px)
+      )
+      top;
+}
+
+.cell-red,
+.cell-blue,
+.cell-empty {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-top: 2px;
+  display: inline-block;
+}
+
+.cell-red {
+  background-color: red;
+}
+
+.cell-blue {
+  background-color: blue;
+}
+
+.cell-empty {
+  background-color: transparent;
+}
+
+.cell-wrapper {
+  border-radius: 10px;
+  position: relative;
+  box-sizing: border-box;
+  content: '';
+  border: 1px black;
+  line-height: 20px;
+  height: 25px;
+  width: 25px;
   margin-right: -1px;
   margin-top: -1px;
-  padding: 0;
   text-align: center;
-  width: 30px;
+  display: inline-block;
+}
+
+.cell-wrapper:before {
+  border-top: 2px rgba(0, 0, 0, 0.103) solid;
+  width: 24px;
+  display: block;
+  content: '';
+  top: 10px;
+  position: absolute;
+  z-index: -1;
+}
+
+.cell-wrapper:after {
+  border-left: 2px rgba(0, 0, 0, 0.103) solid;
+  height: 24px;
+  display: block;
+  content: '';
+  left: 12px;
+  top: 0px;
+  position: absolute;
+  z-index: -1;
 }
 
 .square:focus {
@@ -63,8 +127,11 @@ ol, ul {
 }
 
 .game {
-  display: flex;
-  flex-direction: row;
+  width: 350px;
+  height: 120px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .game-info {
