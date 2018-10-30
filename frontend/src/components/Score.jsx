@@ -3,11 +3,16 @@ import { connect } from 'react-redux';
 
 class Score extends React.Component {
   render() {
-    const totalDots = this.props.board.filter((cell) => cell.active === false)
-      .length;
+    const currentPlayer = this.props.color === 1 ? 'Red' : 'Blue';
     return (
       <div>
-        <h1>Total dots: {totalDots}</h1>
+        <p>Next move: {currentPlayer}</p>
+        <button
+          className="btn btn-secondary form-control"
+          onClick={this.props.startNewGame}
+        >
+          Reset field
+        </button>
       </div>
     );
   }
@@ -15,7 +20,8 @@ class Score extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    board: state.board,
+    color: state.player.color,
+    board: state.game.board,
   };
 }
 

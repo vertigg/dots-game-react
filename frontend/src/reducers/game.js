@@ -1,28 +1,56 @@
-import { SWITCH_PLAYER, CREATE_BOARD, UPDATE_BOARD } from '../actions/types';
+import {
+  SWITCH_PLAYER,
+  CREATE_BOARD,
+  UPDATE_BOARD,
+  SET_PLAYER,
+} from '../actions/types';
+import { Colors } from '../components/helpers/contstants';
 
-const initialPlayer = 0;
+const initialPlayer = Colors.BLUE;
 const initialBoard = [];
 
-export const player = (state = initialPlayer, action) => {
+export const player = (state = { color: initialPlayer }, action) => {
   switch (action.type) {
+    case SET_PLAYER:
+      return {
+        ...state,
+        color: action.data,
+      };
+
     case SWITCH_PLAYER:
-      return { ...state, player: state.player === 0 ? 1 : 0 };
+      return {
+        ...state,
+        color: state.color === Colors.RED ? Colors.BLUE : Colors.RED,
+      };
     default:
       return state;
   }
 };
 
-export const board = (state = initialBoard, action) => {
+export const game = (
+  state = { board: initialBoard, status: 'inProgress' },
+  action,
+) => {
   switch (action.type) {
     case CREATE_BOARD:
-      return action.data;
+      return {
+        ...state,
+        board: action.data,
+      };
     case UPDATE_BOARD:
-      return state.map(
-        (cell) =>
-          cell.index === action.data.id
-            ? { ...cell, active: action.data.active, color: action.data.color }
-            : cell,
-      );
+      return {
+        ...state,
+        board: state.board.map(
+          (cell) =>
+            cell.index === action.data.id
+              ? {
+                  ...cell,
+                  active: action.data.active,
+                  color: action.data.color,
+                }
+              : cell,
+        ),
+      };
 
     default:
       return state;

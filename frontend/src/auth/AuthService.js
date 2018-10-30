@@ -34,7 +34,7 @@ function authorize(endpoint, username, password) {
 function apiRequest(endpoint) {
   return fetch(endpoint, headers.withToken())
     .then(handleErrors)
-    .then(response => JSON.parse(response));
+    .then((response) => JSON.parse(response));
 }
 
 function login(username, password) {

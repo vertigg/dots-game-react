@@ -1,13 +1,10 @@
 body {
-  margin: 0;
-  padding: 0;
-
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .login-centered {
-  margin-top: 15%;
+  margin-top: 10%;
 }
 
 .form-alert {
@@ -79,6 +76,7 @@ ul {
 }
 
 .cell-empty {
+  cursor: pointer;
   background-color: transparent;
 }
 

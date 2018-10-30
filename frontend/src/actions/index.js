@@ -14,10 +14,16 @@ export function removeToken() {
   };
 }
 
+export function setPlayer(color) {
+  return {
+    type: actionTypes.SET_PLAYER,
+    data: color,
+  };
+}
+
 export function switchPlayer() {
   return {
     type: actionTypes.SWITCH_PLAYER,
-    data: 0 ? 1 : 0,
   };
 }
 

@@ -1,66 +1,58 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import Score from './Score';
-import { authService } from '../auth/AuthService';
-import Colors from './helpers/Colors';
 import { store } from '../store';
-import { switchPlayer, createBoard, updateBoard } from '../actions';
+import { switchPlayer, createBoard, updateBoard, setPlayer } from '../actions';
 import Board from './Board';
-import { HEIGTH, WIDTH } from './helpers/contstants';
+import { Colors } from './helpers/contstants';
+import NavBar from './NavBar';
+import Dots from './helpers/dots';
 
 class Game extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      board: [],
-    };
+    this.startNewGame();
   }
 
-  handleCellChange = (cell) => {
+  makeMove = (cell) => {
+    console.log('Update: ', cell);
+    cell.color = this.props.player.color;
+    cell.active = false;
     store.dispatch(switchPlayer());
     store.dispatch(updateBoard(cell));
   };
 
-  componentDidMount() {
-    this.startNewGame();
-  }
-
   startNewGame = () => {
-    const board = this.createGrid();
+    const board = Dots.createGrid();
     store.dispatch(createBoard(board));
-    this.setState({ board });
-  };
-
-  createGrid = () => {
-    const m = [];
-    let key = 0;
-    for (let i = 0; i < HEIGTH; i++) {
-      for (let j = 0; j < WIDTH; j++) {
-        m.push({
-          point: [i, j],
-          id: key,
-          active: true,
-          color: Colors.EMPTY,
-        });
-        key += 1;
-      }
-    }
-    return m;
+    store.dispatch(setPlayer(Colors.RED));
+    console.log('New game created');
   };
 
   render() {
     return (
-      <div>
-        <Link to="/login">
-          <div className="btn btn-primary" onClick={authService.logout}>
-            Logout
+      <React.Fragment>
+        <NavBar />
+        <div className="container m-2 ">
+          <div className="row">
+            <div className="col-2">
+              <Score startNewGame={this.startNewGame} />
+            </div>
+            <div className="col-10">
+              <Board onCellChange={this.makeMove} />
+            </div>
           </div>
-        </Link>
-        <Score />
-        <Board onCellChange={this.handleCellChange} board={this.state.board} />
-      </div>
+        </div>
+      </React.Fragment>
     );
   }
 }
 
-export default Game;
+function mapStateToProps(state) {
+  return {
+    game: state.game,
+    player: state.player,
+  };
+}
+
+export default connect(mapStateToProps)(Game);

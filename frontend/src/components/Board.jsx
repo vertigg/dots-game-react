@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import Cell from './Cell';
 import { CELL_MARGIN, CELL_SIZE, WIDTH } from './helpers/contstants';
 
@@ -11,16 +12,28 @@ class Board extends Component {
     };
     return (
       <div className="board" style={styles}>
-        {this.props.board.map((cell) => (
-          <Cell
-            onCellChange={this.props.onCellChange}
-            key={cell.id}
-            cell={cell}
-          />
-        ))}
+        {this.props.board.map((row) => {
+          return row.map((cell) => {
+            return (
+              <Cell
+                x={cell.x}
+                y={cell.y}
+                onCellChange={this.props.onCellChange}
+                key={cell.id}
+                cell={cell}
+              />
+            );
+          });
+        })}
       </div>
     );
   }
 }
 
-export default Board;
+function mapStateToProps(state) {
+  return {
+    board: state.game.board,
+  };
+}
+
+export default connect(mapStateToProps)(Board);

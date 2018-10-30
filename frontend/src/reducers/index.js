@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import token from './auth';
-import { player, board } from './game';
+import { player, game } from './game';
 
 const appReducer = combineReducers({
   token,
   player,
-  board,
+  game,
 });
 
 const rootReducer = (state, action) => appReducer(state, action);
