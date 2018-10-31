@@ -3,6 +3,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.error-template {
+  padding: 40px 15px;
+  text-align: center;
+}
+.error-actions {
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.error-actions .btn {
+  margin-right: 10px;
+}
+
 .login-centered {
   margin-top: 10%;
 }
@@ -20,8 +32,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 ol,
@@ -48,13 +59,7 @@ ul {
         transparent calc(50% + 1px)
       )
       bottom,
-    linear-gradient(
-        180deg,
-        transparent calc(50% - 1px),
-        #000000,
-        transparent calc(50% + 1px)
-      )
-      top;
+    linear-gradient(180deg, transparent calc(50% - 1px), #000000, transparent calc(50% + 1px)) top;
 }
 
 .cell-red,

@@ -14,10 +14,13 @@ class Game extends React.Component {
     this.startNewGame();
   }
 
-  makeMove = (cell) => {
-    console.log('Update: ', cell);
+  makeMove = cell => {
+    // move cell update in action
     cell.color = this.props.player.color;
     cell.active = false;
+
+    Dots.detectCycle(this.props.board, cell);
+
     store.dispatch(switchPlayer());
     store.dispatch(updateBoard(cell));
   };
@@ -51,7 +54,8 @@ class Game extends React.Component {
 function mapStateToProps(state) {
   return {
     game: state.game,
-    player: state.player,
+    board: state.game.board,
+    player: state.player
   };
 }
 
