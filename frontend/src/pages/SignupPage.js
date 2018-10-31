@@ -10,26 +10,20 @@ class SignupPage extends React.Component {
       password2: '',
       loading: false,
       submitted: false,
-      error: '',
+      error: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
+  handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-  }
+  };
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
     this.setState({ submitted: true });
     const { username, password1, password2 } = this.state;
-    if (
-      !(username && password1) ||
-      password1 !== password2 ||
-      password1.length <= 5
-    ) {
+    if (!(username && password1) || password1 !== password2 || password1.length <= 5) {
       return;
     }
     this.setState({ loading: true });
@@ -38,14 +32,14 @@ class SignupPage extends React.Component {
       .then(() => {
         this.props.history.push({ pathname: '/' });
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.message === '400') {
           this.setState({ error: 'Username already exists' });
         } else {
           this.setState({ error: error.message });
         }
       });
-  }
+  };
 
   render() {
     const { username, password1, password2, submitted, error } = this.state;
@@ -60,9 +54,7 @@ class SignupPage extends React.Component {
                 Username
               </label>
               <input
-                className={`form-control ${
-                  submitted && !username ? 'is-invalid' : ''
-                }`}
+                className={`form-control ${submitted && !username ? 'is-invalid' : ''}`}
                 type="text"
                 name="username"
                 value={this.state.username}
@@ -70,9 +62,7 @@ class SignupPage extends React.Component {
               />
               {submitted &&
                 !username && (
-                  <div className="form-group text-danger small">
-                    Username is required
-                  </div>
+                  <div className="form-group text-danger small">Username is required</div>
                 )}
             </div>
             <div className="form-group">

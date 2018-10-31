@@ -25,7 +25,7 @@ function handleErrors(promise) {
 function authorize(endpoint, username, password) {
   return fetch(endpoint, headers.authorization(username, password))
     .then(handleErrors)
-    .then((response) => {
+    .then(response => {
       const data = JSON.parse(response);
       store.dispatch(setToken(data.token));
     });
@@ -34,7 +34,7 @@ function authorize(endpoint, username, password) {
 function apiRequest(endpoint) {
   return fetch(endpoint, headers.withToken())
     .then(handleErrors)
-    .then((response) => JSON.parse(response));
+    .then(response => JSON.parse(response));
 }
 
 function login(username, password) {
@@ -57,5 +57,5 @@ export const authService = {
   login,
   logout,
   signup,
-  getUsername,
+  getUsername
 };

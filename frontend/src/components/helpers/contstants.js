@@ -6,5 +6,5 @@ export const CELL_MARGIN = 1;
 export const Colors = {
   EMPTY: 0,
   RED: 1,
-  BLUE: 2,
+  BLUE: 2
 };

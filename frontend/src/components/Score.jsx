@@ -7,10 +7,7 @@ class Score extends React.Component {
     return (
       <div>
         <p>Next move: {currentPlayer}</p>
-        <button
-          className="btn btn-secondary form-control"
-          onClick={this.props.startNewGame}
-        >
+        <button className="btn btn-secondary form-control" onClick={this.props.startNewGame}>
           Reset field
         </button>
       </div>
@@ -21,7 +18,7 @@ class Score extends React.Component {
 function mapStateToProps(state) {
   return {
     color: state.player.color,
-    board: state.game.board,
+    board: state.game.board
   };
 }
 

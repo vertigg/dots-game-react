@@ -8,23 +8,21 @@ class Board extends Component {
     const styles = {
       minWidth: CELL_SIZE * WIDTH - WIDTH + CELL_MARGIN,
       maxWidth: CELL_SIZE * WIDTH - WIDTH + CELL_MARGIN,
-      margin: 'auto',
+      margin: 'auto'
     };
     return (
       <div className="board" style={styles}>
-        {this.props.board.map((row) => {
-          return row.map((cell) => {
-            return (
-              <Cell
-                x={cell.x}
-                y={cell.y}
-                onCellChange={this.props.onCellChange}
-                key={cell.id}
-                cell={cell}
-              />
-            );
-          });
-        })}
+        {this.props.board.map(row =>
+          row.map(cell => (
+            <Cell
+              x={cell.x}
+              y={cell.y}
+              onCellChange={this.props.onCellChange}
+              key={cell.id}
+              cell={cell}
+            />
+          ))
+        )}
       </div>
     );
   }
@@ -32,7 +30,7 @@ class Board extends Component {
 
 function mapStateToProps(state) {
   return {
-    board: state.game.board,
+    board: state.game.board
   };
 }
 

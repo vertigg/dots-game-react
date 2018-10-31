@@ -39,10 +39,7 @@ class Cell extends Component {
   render() {
     return (
       <div className="cell-wrapper">
-        <div
-          className={this.getComponentClasses()}
-          onClick={this.handleClick}
-        />
+        <div className={this.getComponentClasses()} onClick={this.handleClick} />
       </div>
     );
   }

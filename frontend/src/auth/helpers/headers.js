@@ -5,7 +5,7 @@ function withToken() {
   if (token !== null) {
     return {
       method: 'GET',
-      headers: { Authorization: `Token ${token}` },
+      headers: { Authorization: `Token ${token}` }
     };
   }
   return {};
@@ -15,11 +15,11 @@ function authorization(username, password) {
   return {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password }),
+    body: JSON.stringify({ username, password })
   };
 }
 
-export default{
+export default {
   withToken,
-  authorization,
+  authorization
 };
