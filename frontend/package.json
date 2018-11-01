@@ -12,7 +12,8 @@
     "react-scripts": "2.0.5",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^5.10.0"
+    "redux-persist": "^5.10.0",
+    "redux-thunk": "^2.3.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,5 +38,5 @@
     "eslint-plugin-prettier": "^3.0.0",
     "install-peerdeps": "^1.9.0"
   },
-  "proxy": "http://127.0.0.1:8000/api/"
+  "proxy": "http://127.0.0.1:8000/"
 }

@@ -1,49 +1,44 @@
-import { SWITCH_PLAYER, CREATE_BOARD, UPDATE_BOARD, SET_PLAYER } from '../actions/types';
+import { UPDATE_BOARD, START_GAME } from '../actions/types';
 import { Colors } from '../components/helpers/contstants';
+import dots from '../components/helpers/dots';
 
 const initialPlayer = Colors.BLUE;
-const initialBoard = [];
-
-export const player = (state = { color: initialPlayer }, { type, data }) => {
-  switch (type) {
-    case SET_PLAYER:
-      return {
-        ...state,
-        color: data
-      };
-
-    case SWITCH_PLAYER:
-      return {
-        ...state,
-        color: state.color === Colors.RED ? Colors.BLUE : Colors.RED
-      };
-    default:
-      return state;
-  }
+const initialGameState = {
+  board: [],
+  status: 'inProgress',
+  cycles: [],
+  player: Colors.RED
 };
 
-export const game = (state = { board: initialBoard, status: 'inProgress' }, { type, data }) => {
+export default (state = initialGameState, { type, data }) => {
   switch (type) {
-    case CREATE_BOARD:
+    case START_GAME:
       return {
         ...state,
-        board: data
+        board: dots.createGrid(),
+        player: initialPlayer,
+        status: 'inProgress',
+        borders: []
       };
-    case UPDATE_BOARD:
+    case UPDATE_BOARD: {
+      data.color = state.player;
+      data.active = false;
+      dots.detectCycle(state.board, data); // detect cycles on board
       return {
         ...state,
         board: state.board.map(
-          cell =>
-            cell.id === data.id
+          element =>
+            element.id === data.id
               ? {
-                  ...cell,
-                  active: data.active,
-                  color: data.color
+                  ...element,
+                  active: false,
+                  color: state.player
                 }
-              : cell
-        )
+              : element
+        ),
+        player: state.player === Colors.RED ? Colors.BLUE : Colors.RED
       };
-
+    }
     default:
       return state;
   }

@@ -1,13 +1,39 @@
-import { SET_TOKEN, REMOVE_TOKEN } from '../actions/types';
+import {
+  FETCH_TOKEN_BEGIN,
+  FETCH_TOKEN_ERROR,
+  FETCH_TOKEN_SUCCESS,
+  REMOVE_TOKEN
+} from '../actions/auth';
 
-const tokenInitialState = null;
+const initialState = {
+  value: null,
+  loading: false,
+  error: null
+};
 
-const token = (state = tokenInitialState, action) => {
-  switch (action.type) {
-    case SET_TOKEN:
-      return action.data;
+const token = (state = initialState, { type, data }) => {
+  switch (type) {
+    case FETCH_TOKEN_BEGIN:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    case FETCH_TOKEN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        value: data.token
+      };
+    case FETCH_TOKEN_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: data.message
+      };
+
     case REMOVE_TOKEN:
-      return action.data;
+      return { ...state, value: null };
     default:
       return state;
   }

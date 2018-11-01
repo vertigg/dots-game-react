@@ -1,36 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Score from './Score';
-import { store } from '../store';
-import { switchPlayer, createBoard, updateBoard, setPlayer } from '../actions';
+import { startGame } from '../actions/game';
 import Board from './Board';
-import { Colors } from './helpers/contstants';
 import NavBar from './NavBar';
-import Dots from './helpers/dots';
+import Score from './Score';
 
 class Game extends React.Component {
-  constructor(props) {
-    super(props);
-    this.startNewGame();
+  componentDidMount() {
+    this.props.startNewGame();
   }
-
-  makeMove = cell => {
-    // move cell update in action
-    cell.color = this.props.player.color;
-    cell.active = false;
-
-    Dots.detectCycle(this.props.board, cell);
-
-    store.dispatch(switchPlayer());
-    store.dispatch(updateBoard(cell));
-  };
-
-  startNewGame = () => {
-    const board = Dots.createGrid();
-    store.dispatch(createBoard(board));
-    store.dispatch(setPlayer(Colors.RED));
-    console.log('New game created');
-  };
 
   render() {
     return (
@@ -39,10 +17,10 @@ class Game extends React.Component {
         <div className="container m-2 ">
           <div className="row">
             <div className="col-2">
-              <Score startNewGame={this.startNewGame} />
+              <Score />
             </div>
             <div className="col-10">
-              <Board onCellChange={this.makeMove} />
+              <Board />
             </div>
           </div>
         </div>
@@ -51,12 +29,21 @@ class Game extends React.Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    startNewGame: () => dispatch(startGame())
+  };
+}
+
 function mapStateToProps(state) {
   return {
     game: state.game,
     board: state.game.board,
-    player: state.player
+    player: state.game.player
   };
 }
 
-export default connect(mapStateToProps)(Game);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Game);

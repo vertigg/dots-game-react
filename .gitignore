@@ -4,3 +4,4 @@ __pycache__/
 datadump.json
 node_modules/
 .eslintrc.js
+.prettierrc

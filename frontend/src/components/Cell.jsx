@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Colors } from './helpers/contstants';
+import { updateBoard } from '../actions/game';
 
 class Cell extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -20,19 +22,15 @@ class Cell extends Component {
   }
 
   handleClick = () => {
-    if (!this.props.cell.active) {
-      return;
-    }
-    this.setState({ active: this.props.cell.active });
     const { cell } = this.props;
-    this.props.onCellChange(cell);
+    if (!cell.active) return;
+    this.setState({ active: cell.active });
+    this.props.makeMove(cell);
   };
 
   getComponentClasses() {
     const { cell } = this.props;
-    if (cell.color === Colors.EMPTY) {
-      return 'cell-empty';
-    }
+    if (cell.color === Colors.EMPTY) return 'cell-empty';
     return cell.color === Colors.RED ? 'cell-red' : 'cell-blue';
   }
 
@@ -45,4 +43,13 @@ class Cell extends Component {
   }
 }
 
-export default Cell;
+function mapDispatchToProps(dispatch) {
+  return {
+    makeMove: cell => dispatch(updateBoard(cell))
+  };
+}
+
+export default connect(
+  null,
+  mapDispatchToProps
+)(Cell);

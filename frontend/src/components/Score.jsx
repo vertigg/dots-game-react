@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { startGame } from '../actions/game';
 
 class Score extends React.Component {
   render() {
-    const currentPlayer = this.props.color === 1 ? 'Red' : 'Blue';
+    const currentPlayer = this.props.player === 1 ? 'Red' : 'Blue';
     return (
       <div>
         <p>Next move: {currentPlayer}</p>
@@ -15,11 +16,20 @@ class Score extends React.Component {
   }
 }
 
+function mapDispatchToProps(dispatch) {
+  return {
+    startNewGame: () => dispatch(startGame())
+  };
+}
+
 function mapStateToProps(state) {
   return {
-    color: state.player.color,
+    player: state.game.player,
     board: state.game.board
   };
 }
 
-export default connect(mapStateToProps)(Score);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Score);

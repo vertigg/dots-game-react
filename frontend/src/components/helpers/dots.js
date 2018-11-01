@@ -45,7 +45,7 @@ const getNeighbors = (board, cell, color) => {
   return result;
 };
 
-const detectCycleUtil = (board, vertex, visited, recStack, fromNode = null) => {
+const detectCycleUtil = (board, vertex, visited, recStack, fromNode = null, startNode = null) => {
   if (!visited[vertex.id]) {
     visited[vertex.id] = true;
     recStack[vertex.id] = true;
@@ -57,14 +57,13 @@ const detectCycleUtil = (board, vertex, visited, recStack, fromNode = null) => {
 
     for (let i = 0; i < neighbors.length; i++) {
       const currentNode = neighbors[i];
-      console.log('Parent', vertex, 'Child', currentNode);
       if (
         !visited[currentNode.id] &&
-        detectCycleUtil(board, currentNode, visited, recStack, vertex)
+        detectCycleUtil(board, currentNode, visited, recStack, vertex, startNode)
       ) {
         return true;
       }
-      if (recStack[currentNode.id]) {
+      if (recStack[currentNode.id] && currentNode.id === startNode.id) {
         return true;
       }
     }
@@ -77,8 +76,8 @@ const detectCycle = (board, cell) => {
   const visited = {};
   const recStack = {};
 
-  if (detectCycleUtil(board, cell, visited, recStack)) {
-    console.log('Cycle detected', recStack);
+  if (detectCycleUtil(board, cell, visited, recStack, null, cell)) {
+    console.log('Possible cycle detected', recStack);
     return recStack;
   }
   console.log('No cycle detected');

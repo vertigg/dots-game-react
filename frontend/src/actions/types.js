@@ -1,9 +1,2 @@
-// Auth actions
-export const SET_TOKEN = 'SET_TOKEN';
-export const REMOVE_TOKEN = 'REMOVE_TOKEN';
-
-// Game actions
-export const SET_PLAYER = 'SET_PLAYER';
-export const SWITCH_PLAYER = 'SWITCH_PLAYER';
+export const START_GAME = 'START_GAME';
 export const UPDATE_BOARD = 'UPDATE_BOARD';
-export const CREATE_BOARD = 'CREATE_BOARD';

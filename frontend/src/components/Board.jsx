@@ -13,15 +13,7 @@ class Board extends Component {
     return (
       <div className="board" style={styles}>
         {this.props.board.map(row =>
-          row.map(cell => (
-            <Cell
-              x={cell.x}
-              y={cell.y}
-              onCellChange={this.props.onCellChange}
-              key={cell.id}
-              cell={cell}
-            />
-          ))
+          row.map(cell => <Cell x={cell.x} y={cell.y} key={cell.id} cell={cell} />)
         )}
       </div>
     );

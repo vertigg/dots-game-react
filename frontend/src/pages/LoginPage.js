@@ -1,52 +1,40 @@
 import React from 'react';
-import { authService } from '../auth/AuthService';
+import { connect } from 'react-redux';
+import { fetchToken } from '../actions/auth';
 
 class LoginPage extends React.Component {
   constructor(props) {
     super(props);
-    authService.logout();
 
     this.state = {
       username: '',
       password: '',
-      loading: false,
-      submitted: false,
-      error: ''
+      submitted: false
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSubmit(event) {
+  handleSubmit = event => {
     event.preventDefault();
     this.setState({ submitted: true });
     const { username, password } = this.state;
     if (!(username && password)) {
       return;
     }
-    this.setState({ loading: true });
 
-    authService
-      .login(username, password)
-      .then(() => {
-        this.props.history.push({ pathname: '/' });
-      })
-      .catch(error => {
-        if (error.message === '400') {
-          this.setState({ error: 'Invalid credentials' });
-        } else {
-          this.setState({ error: error.message });
-        }
-      });
-  }
+    this.props.login(username, password).then(() => {
+      this.props.history.push({ pathname: '/' });
+    });
+  };
 
-  handleChange(event) {
+  handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
-  }
+  };
 
   render() {
-    const { username, password, submitted, error } = this.state;
+    const { loading, error } = this.props;
+    const { username, password, submitted } = this.state;
 
     return (
       <div className="container login-centered user-form col-sm-3 col-xs-6">
@@ -79,7 +67,6 @@ class LoginPage extends React.Component {
               !password && <div className="form-group text-danger small">Password is required</div>}
           </div>
           <div>
-            <input type="hidden" name="next" value="{{ next }}" />
             <input className="btn btn-primary float-right" type="submit" value="Login" />
           </div>
         </form>
@@ -94,4 +81,20 @@ class LoginPage extends React.Component {
   }
 }
 
-export default LoginPage;
+function mapDispatchToProps(dispatch) {
+  return {
+    login: (username, password) => dispatch(fetchToken(username, password))
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    loading: state.token.loading,
+    error: state.token.error
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginPage);
