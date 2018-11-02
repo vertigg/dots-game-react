@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { isLoggedIn, authService } from '../auth/AuthService';
+import { isLoggedIn, removeToken } from '../actions/auth';
 
 class NavBar extends Component {
   render() {
@@ -11,7 +11,7 @@ class NavBar extends Component {
           <nav className="navbar navbar-dark bg-dark justify-content-between">
             <h6 className="navbar-brand">Dots game</h6>
             <Link to="/login">
-              <button className="btn btn-primary" onClick={authService.logout}>
+              <button className="btn btn-primary" onClick={this.props.logout}>
                 Logout
               </button>
             </Link>
@@ -28,4 +28,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(NavBar);
+function mapDispatchToProps(dispatch) {
+  return {
+    logout: () => dispatch(removeToken())
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavBar);

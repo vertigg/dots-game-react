@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Colors } from './helpers/contstants';
-import { updateBoard } from '../actions/game';
+import { makeMove } from '../actions/game';
 
 class Cell extends Component {
   shouldComponentUpdate(nextProps, nextState) {
@@ -37,7 +37,11 @@ class Cell extends Component {
   render() {
     return (
       <div className="cell-wrapper">
-        <div className={this.getComponentClasses()} onClick={this.handleClick} />
+        <div
+          className={this.getComponentClasses()}
+          title={this.props.cell.id}
+          onClick={this.handleClick}
+        />
       </div>
     );
   }
@@ -45,7 +49,7 @@ class Cell extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    makeMove: cell => dispatch(updateBoard(cell))
+    makeMove: cell => dispatch(makeMove(cell))
   };
 }
 

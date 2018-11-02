@@ -1,4 +1,6 @@
-import { Colors, HEIGTH, WIDTH } from './contstants';
+import { Colors, HEIGTH, WIDTH } from '../../components/helpers/contstants';
+
+const inside = require('robust-point-in-polygon');
 
 const createGrid = () => {
   const m = [];
@@ -12,6 +14,7 @@ const createGrid = () => {
         y: j,
         color: Colors.EMPTY,
         active: true,
+        captured: false,
         id: key
       };
       key += 1;
@@ -22,7 +25,8 @@ const createGrid = () => {
 
 const getNeighbors = (board, cell, color) => {
   // returns all neighbors with the same color as provided
-  // todo: add filter for cells that are already in cycles
+  // todo: add filter for cells if they are already in cycles and only neighbors of this cell
+  // put cells if they are already in cycles after
   const neighbors = [];
   const { x, y } = cell;
   // North
@@ -45,23 +49,34 @@ const getNeighbors = (board, cell, color) => {
   return result;
 };
 
-const detectCycleUtil = (board, vertex, visited, recStack, fromNode = null, startNode = null) => {
+const detectCycleUtil = (
+  board,
+  vertex,
+  visited,
+  recStack,
+  fromNode = null,
+  startNode = null,
+  polygonPath
+) => {
   if (!visited[vertex.id]) {
     visited[vertex.id] = true;
     recStack[vertex.id] = true;
+    polygonPath.push(vertex);
     let neighbors = getNeighbors(board, vertex, vertex.color);
-    // remove parent node from neighbors list
+    // Remove parent node from neighbors list
     if (fromNode) {
       neighbors = neighbors.filter(el => el.id !== fromNode.id);
     }
 
     for (let i = 0; i < neighbors.length; i++) {
       const currentNode = neighbors[i];
+      // If not visited - traverse further
       if (
         !visited[currentNode.id] &&
-        detectCycleUtil(board, currentNode, visited, recStack, vertex, startNode)
+        detectCycleUtil(board, currentNode, visited, recStack, vertex, startNode, polygonPath)
       ) {
         return true;
+        // If vertex is visited && already in recursive stack && it's starter node
       }
       if (recStack[currentNode.id] && currentNode.id === startNode.id) {
         return true;
@@ -69,19 +84,48 @@ const detectCycleUtil = (board, vertex, visited, recStack, fromNode = null, star
     }
   }
   recStack[vertex.id] = false;
+  polygonPath.pop(vertex);
   return false;
 };
 
 const detectCycle = (board, cell) => {
   const visited = {};
+  const captured = [];
   const recStack = {};
+  const polygonPath = [];
 
-  if (detectCycleUtil(board, cell, visited, recStack, null, cell)) {
-    console.log('Possible cycle detected', recStack);
-    return recStack;
+  const result = {
+    success: false,
+    polygon: null,
+    captured,
+    red: 0,
+    blue: 0
+  };
+
+  if (detectCycleUtil(board, cell, visited, recStack, null, cell, polygonPath)) {
+    // Possible cycle detected
+    const polygon = polygonPath.map(el => [el.x, el.y]);
+    // Check if polygon contains cells
+    board.forEach(row => {
+      row.forEach(point => {
+        if (inside(polygon, [point.x, point.y]) === -1) {
+          // "capture" points inside polygon
+          captured.push(point.id);
+          if (point.color !== Colors.EMPTY && point.Colors !== cell.color && !point.captured)
+            if (cell.color === Colors.RED) {
+              result.red += 1;
+            } else {
+              result.blue += 1;
+            }
+        }
+      });
+    });
+    result.success = true;
+    result.polygon = polygon;
+    return result;
   }
-  console.log('No cycle detected');
-  return {};
+  // if no cycle detected
+  return result;
 };
 
 export default {

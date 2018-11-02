@@ -1,5 +1,6 @@
 import React from 'react';
-import { authService } from '../auth/AuthService';
+import { connect } from 'react-redux';
+import { fetchToken } from '../actions/auth';
 
 class SignupPage extends React.Component {
   constructor(props) {
@@ -8,9 +9,7 @@ class SignupPage extends React.Component {
       username: '',
       password1: '',
       password2: '',
-      loading: false,
-      submitted: false,
-      error: ''
+      submitted: false
     };
   }
 
@@ -26,23 +25,15 @@ class SignupPage extends React.Component {
     if (!(username && password1) || password1 !== password2 || password1.length <= 5) {
       return;
     }
-    this.setState({ loading: true });
-    authService
-      .signup(username, password1)
-      .then(() => {
-        this.props.history.push({ pathname: '/' });
-      })
-      .catch(error => {
-        if (error.message === '400') {
-          this.setState({ error: 'Username already exists' });
-        } else {
-          this.setState({ error: error.message });
-        }
-      });
+
+    this.props.signup(username, password1).then(() => {
+      this.props.history.push({ pathname: '/' });
+    });
   };
 
   render() {
-    const { username, password1, password2, submitted, error } = this.state;
+    const { error } = this.props;
+    const { username, password1, password2, submitted } = this.state;
 
     return (
       <div className="container login-centered user-form col-sm-3 col-xs-6">
@@ -117,4 +108,20 @@ class SignupPage extends React.Component {
   }
 }
 
-export default SignupPage;
+function mapDispatchToProps(dispatch) {
+  return {
+    signup: (username, password) => dispatch(fetchToken(username, password, 'signup')) // Add endpoint
+  };
+}
+
+function mapStateToProps(state) {
+  return {
+    loading: state.token.loading,
+    error: state.token.error
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SignupPage);

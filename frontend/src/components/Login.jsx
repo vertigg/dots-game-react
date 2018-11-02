@@ -11,7 +11,6 @@ class LoginPage extends React.Component {
       password: '',
       submitted: false
     };
-    this.handleChange = this.handleChange.bind(this);
   }
 
   handleSubmit = event => {
@@ -33,7 +32,7 @@ class LoginPage extends React.Component {
   };
 
   render() {
-    const { loading, error } = this.props;
+    const { error } = this.props;
     const { username, password, submitted } = this.state;
 
     return (
@@ -83,7 +82,7 @@ class LoginPage extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (username, password) => dispatch(fetchToken(username, password))
+    login: (username, password) => dispatch(fetchToken(username, password, 'login'))
   };
 }
 

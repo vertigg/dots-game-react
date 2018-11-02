@@ -3,11 +3,11 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import { persistor, store } from './store';
-import LoginPage from './pages/LoginPage';
-import SignupPage from './pages/SignupPage';
 import PrivateRoute from './routes';
 import Game from './components/Game';
 import NotFound from './components/NoMatch';
+import Login from './components/Login';
+import Signup from './components/Signup';
 
 class App extends React.Component {
   render() {
@@ -18,8 +18,8 @@ class App extends React.Component {
             <div>
               <Switch>
                 <PrivateRoute exact path="/" component={Game} />
-                <Route path="/login" component={LoginPage} />
-                <Route path="/signup" component={SignupPage} />
+                <Route path="/login" component={Login} />
+                <Route path="/signup" component={Signup} />
                 <Route component={NotFound} />
               </Switch>
             </div>
