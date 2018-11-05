@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchToken } from '../actions/auth';
+import { apiEndpoints } from '../actions/helpers/contstants';
 
 class SignupPage extends React.Component {
   constructor(props) {
@@ -110,7 +111,7 @@ class SignupPage extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signup: (username, password) => dispatch(fetchToken(username, password, 'signup')) // Add endpoint
+    signup: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.signup)) // Add endpoint
   };
 }
 

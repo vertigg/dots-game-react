@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.authtoken.models import Token
+from core.models import GameInfo
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -16,3 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         Token.objects.create(user=user)
         return user
+
+
+class GameInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GameInfo
+        fields = ('winner', 'board', 'borders',
+                  'score', 'started_at', 'ended_at')

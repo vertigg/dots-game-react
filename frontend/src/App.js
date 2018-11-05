@@ -8,6 +8,7 @@ import Game from './components/Game';
 import NotFound from './components/NoMatch';
 import Login from './components/Login';
 import Signup from './components/Signup';
+import History from './components/History';
 
 class App extends React.Component {
   render() {
@@ -20,6 +21,7 @@ class App extends React.Component {
                 <PrivateRoute exact path="/" component={Game} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={Signup} />
+                <Route path="/history" component={History} />
                 <Route component={NotFound} />
               </Switch>
             </div>

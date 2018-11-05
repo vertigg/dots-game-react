@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { startGame } from '../actions/game';
+import { CELL_THRESHOLD } from '../actions/helpers/contstants';
+import ResetButton from './buttons/ResetButton';
 
 class Score extends React.Component {
   render() {
-    const currentPlayer = this.props.player === 1 ? 'Red' : 'Blue';
+    const { score, player } = this.props;
+    const currentPlayer = player === 1 ? 'Red' : 'Blue';
     return (
       <div>
-        <p>Blue: {this.props.score.blue}</p>
-        <p>Red: {this.props.score.red}</p>
+        <p>Score threshold: {CELL_THRESHOLD}</p>
+        <p>Blue: {score.blue}</p>
+        <p>Red: {score.red}</p>
         <p>Next move: {currentPlayer}</p>
-        <button className="btn btn-secondary form-control" onClick={this.props.startNewGame}>
-          Reset field
-        </button>
+        <ResetButton title="Reset game" />
       </div>
     );
   }
@@ -27,8 +29,7 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
   return {
     score: state.game.score,
-    player: state.game.player,
-    board: state.game.board
+    player: state.game.player
   };
 }
 

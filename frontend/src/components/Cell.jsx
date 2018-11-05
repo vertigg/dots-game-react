@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Colors } from './helpers/contstants';
+import { Colors } from '../actions/helpers/contstants';
 import { makeMove } from '../actions/game';
 
 class Cell extends Component {
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state && !this.state.active) {
+    if (this.state && !this.state.isClickable) {
       // if cell has a state or state.active is false -> don't render
-      if (!this.state.active && nextProps.cell.active) {
+      if (!this.state.isClickable && nextProps.cell.isClickable) {
         // if state is false and cell recieves cell with active===true -> rerender and refresh state
         this.setState({ active: true });
         return true;
@@ -23,8 +23,8 @@ class Cell extends Component {
 
   handleClick = () => {
     const { cell } = this.props;
-    if (!cell.active) return;
-    this.setState({ active: cell.active });
+    if (!cell.isClickable || this.props.isFinished) return;
+    this.setState({ isClickable: cell.isClickable });
     this.props.makeMove(cell);
   };
 
@@ -37,14 +37,16 @@ class Cell extends Component {
   render() {
     return (
       <div className="cell-wrapper">
-        <div
-          className={this.getComponentClasses()}
-          title={this.props.cell.id}
-          onClick={this.handleClick}
-        />
+        <div className={this.getComponentClasses()} onClick={this.handleClick} />
       </div>
     );
   }
+}
+
+function mapStateToProps(state) {
+  return {
+    isFinished: state.game.isFinished
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -54,6 +56,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(Cell);

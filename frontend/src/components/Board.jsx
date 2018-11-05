@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Cell from './Cell';
-import { CELL_MARGIN, CELL_SIZE, WIDTH } from './helpers/contstants';
+import { CELL_MARGIN, CELL_SIZE, WIDTH } from '../actions/helpers/contstants';
 
 class Board extends Component {
   render() {

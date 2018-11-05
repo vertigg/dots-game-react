@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { fetchToken } from '../actions/auth';
+import { apiEndpoints } from '../actions/helpers/contstants';
 
 class LoginPage extends React.Component {
   constructor(props) {
@@ -82,7 +83,7 @@ class LoginPage extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (username, password) => dispatch(fetchToken(username, password, 'login'))
+    login: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.login))
   };
 }
 

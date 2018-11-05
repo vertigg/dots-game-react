@@ -1,3 +1,9 @@
 from django.contrib import admin
+from core.models import GameInfo
 
-# Register your models here.
+
+class GameInfoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'winner', 'score')
+
+
+admin.site.register(GameInfo, GameInfoAdmin)

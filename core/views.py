@@ -4,12 +4,13 @@ from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
+from rest_framework import generics
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from core.forms import StyledUserCreationForm
-from core.serializers import UserSerializer
+from core.models import GameInfo
+from core.serializers import UserSerializer, GameInfoSerializer
 
 
 def index(request):
@@ -34,3 +35,14 @@ def signup(request):
         return Response({"token": token}, status=status.HTTP_201_CREATED)
     else:
         return Response({'error': serialized.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GameInfoListCreate(generics.ListCreateAPIView):
+    serializer_class = GameInfoSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+    def get_queryset(self):
+        user = self.request.user
+        return GameInfo.objects.filter(user=user)

@@ -40,7 +40,7 @@ function handleErrors(response) {
 export function fetchToken(username, password, endpoint) {
   return dispatch => {
     dispatch(fetchTokenBegin());
-    return fetch(`api/${endpoint}`, headers.authorization(username, password))
+    return fetch(endpoint, headers.authorization(username, password))
       .then(handleErrors)
       .then(response => {
         const data = JSON.parse(response);
