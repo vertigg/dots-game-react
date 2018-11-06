@@ -7,12 +7,6 @@ from rest_framework.authtoken.models import Token
 from django.contrib.postgres.fields import JSONField
 
 
-@receiver(post_save, sender=User)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
-
-
 class GameInfo(models.Model):
     id = models.AutoField(blank=True, null=False, primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -20,5 +14,5 @@ class GameInfo(models.Model):
     board = JSONField(blank=False, null=False)
     borders = JSONField(blank=True, null=True)
     score = JSONField()
-    started_at = models.IntegerField()
-    ended_at = models.IntegerField()
+    startedAt = models.IntegerField()
+    endedAt = models.IntegerField()

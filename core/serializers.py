@@ -23,4 +23,4 @@ class GameInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = GameInfo
         fields = ('winner', 'board', 'borders',
-                  'score', 'started_at', 'ended_at')
+                  'score', 'startedAt', 'endedAt')

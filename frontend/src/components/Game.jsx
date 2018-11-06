@@ -15,20 +15,12 @@ class Game extends React.Component {
     return (
       <React.Fragment>
         <NavBar />
-        {!this.props.isFinished ? (
-          <div className="container m-2 ">
-            <div className="row">
-              <div className="col-2">
-                <Score />
-              </div>
-              <div className="col-10">
-                <Board />
-              </div>
-            </div>
+        <div className="container m-2 col-6 col-md-4 mw-100 d-flex justify-content-center">
+          <div className="left-control">{!this.props.isFinished ? <Score /> : <Summary />}</div>
+          <div>
+            <Board />
           </div>
-        ) : (
-          <Summary />
-        )}
+        </div>
       </React.Fragment>
     );
   }

@@ -45,4 +45,4 @@ class GameInfoListCreate(generics.ListCreateAPIView):
 
     def get_queryset(self):
         user = self.request.user
-        return GameInfo.objects.filter(user=user)
+        return GameInfo.objects.filter(user=user).order_by('-endedAt')

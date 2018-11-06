@@ -28,7 +28,9 @@ class SignupPage extends React.Component {
     }
 
     this.props.signup(username, password1).then(() => {
-      this.props.history.push({ pathname: '/' });
+      if (!this.props.error) {
+        this.props.history.push({ pathname: '/' });
+      }
     });
   };
 
@@ -102,7 +104,11 @@ class SignupPage extends React.Component {
           </div>
         </form>
         <span className="form-group has-errors text-muted small">
-          {error && <div className={'form-alert alert-danger'}>{error}</div>}
+          {error !== null && (
+            <div className={'form-alert alert-danger'}>
+              {error.status === 400 ? 'User already exists' : `${error.message}`}
+            </div>
+          )}
         </span>
       </div>
     );
@@ -111,14 +117,14 @@ class SignupPage extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signup: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.signup)) // Add endpoint
+    signup: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.signup))
   };
 }
 
 function mapStateToProps(state) {
   return {
-    loading: state.token.loading,
-    error: state.token.error
+    loading: state.authStatus.loading,
+    error: state.authStatus.error
   };
 }
 

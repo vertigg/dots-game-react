@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux';
-import token from './auth';
 import game from './game';
 import history from './history';
+import { authStatus, token } from './auth';
 
 const appReducer = combineReducers({
+  authStatus,
   token,
   game,
   history

@@ -5,12 +5,12 @@ import dots from '../actions/helpers/dots';
 const initialPlayer = Colors.BLUE;
 const initialGameState = {
   board: [],
-  borders: [],
+  borders: { blue: [], red: [] },
   player: initialPlayer,
   isFinished: false,
   score: { red: 0, blue: 0 },
-  started_at: null,
-  ended_at: null,
+  startedAt: null,
+  endedAt: null,
   winner: 0
 };
 
@@ -20,26 +20,29 @@ export default (state = initialGameState, { type, data }) => {
       return {
         ...state,
         board: dots.createGrid(),
-        borders: [],
+        borders: { blue: [], red: [] },
         player: initialPlayer,
         isFinished: false,
         score: { red: 0, blue: 0 },
-        started_at: Math.round(Date.now() / 1000),
+        startedAt: Math.round(Date.now() / 1000),
         winner: 0,
-        ended_at: null
+        endedAt: null
       };
     case END_GAME:
       return {
         ...state,
         isFinished: true,
-        ended_at: Math.round(Date.now() / 1000),
+        endedAt: Math.round(Date.now() / 1000),
+        board: state.board.map(row =>
+          row.map(cell => (cell.isClickable ? { ...cell, isClickable: false } : cell))
+        ),
         winner: data
       };
     case CAPTURE_CELLS: {
       return {
         ...state,
         score: data.score,
-        borders: [...state.borders, data.borders],
+        borders: data.borders,
         board: data.board
       };
     }

@@ -5,13 +5,31 @@ import {
   REMOVE_TOKEN
 } from '../actions/auth';
 
-const initialState = {
+const initialTokenState = {
+  value: null
+};
+
+const initialAuthState = {
   value: null,
   loading: false,
   error: null
 };
 
-const token = (state = initialState, { type, data }) => {
+export const token = (state = initialTokenState, { type, data }) => {
+  switch (type) {
+    case FETCH_TOKEN_SUCCESS:
+      return {
+        ...state,
+        value: data.token
+      };
+    case REMOVE_TOKEN:
+      return { ...state, value: null };
+    default:
+      return state;
+  }
+};
+
+export const authStatus = (state = initialAuthState, { type, data }) => {
   switch (type) {
     case FETCH_TOKEN_BEGIN:
       return {
@@ -22,21 +40,18 @@ const token = (state = initialState, { type, data }) => {
     case FETCH_TOKEN_SUCCESS:
       return {
         ...state,
-        loading: false,
-        value: data.token
+        loading: false
       };
     case FETCH_TOKEN_ERROR:
       return {
         ...state,
         loading: false,
-        error: data.message
+        error: data
       };
 
     case REMOVE_TOKEN:
-      return { ...state, value: null };
+      return { ...state, value: null, error: null };
     default:
       return state;
   }
 };
-
-export default token;

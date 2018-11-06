@@ -1,6 +1,6 @@
 import { store } from '../../store';
 
-function withToken() {
+function apiGet() {
   const { token } = store.getState();
   if (token.value !== null) {
     return {
@@ -13,7 +13,6 @@ function withToken() {
 
 function apiPost(body) {
   const { token } = store.getState();
-  console.log('token', token.value);
   if (token.value !== null) {
     return {
       crossDomain: true,
@@ -37,7 +36,7 @@ function authorization(username, password) {
 }
 
 export default {
-  withToken,
   authorization,
-  apiPost
+  apiPost,
+  apiGet
 };

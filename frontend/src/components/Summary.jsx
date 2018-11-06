@@ -12,64 +12,42 @@ class Summary extends Component {
     const { saving, saved, error } = this.props.history;
     return (
       <React.Fragment>
-        <div className="container login-centered text-center col-sm-3 col-xs-6">
-          {error && (
-            <div>
-              <h1>{error}</h1>
-              <div className="row">
-                <div className="col">
-                  <SaveButton title="Retry save" />
-                </div>
-                <div className="col">
-                  <ResetButton title="Start new game" />
-                </div>
-              </div>
-            </div>
-          )}
-          {saved && (
+        {error && (
+          <div>
+            <h3>{error}</h3>
+            <SaveButton title="Retry save" />
+            <ResetButton title="Start new game" />
+          </div>
+        )}
+        {saved && (
+          <React.Fragment>
+            <h1>Game saved!</h1>
+            <Link to="/history">
+              <button className="btn btn-secondary form-control">History</button>
+            </Link>
+            <ResetButton title="Start new game" />
+          </React.Fragment>
+        )}
+        {saving &&
+          !error && (
             <React.Fragment>
-              <h1>Game saved!</h1>
-              <div className="row">
-                <div className="col">
-                  <Link to="/history">
-                    <button className="btn btn-secondary form-control">History</button>
-                  </Link>
-                </div>
-                <div className="col">
-                  <ResetButton title="Start new game" />
-                </div>
+              <div className="lds-ripple float-right ">
+                <div />
+              </div>
+              <div className="col-sm-8 float-left">
+                <h1>Saving</h1>
               </div>
             </React.Fragment>
           )}
-          {saving &&
-            !error && (
-              <React.Fragment>
-                <div className="row">
-                  <div className="lds-ripple col-sm-2 float-right ">
-                    <div />
-                  </div>
-                  <div className="col-sm-8 float-left">
-                    <h1>Saving</h1>
-                  </div>
-                </div>
-              </React.Fragment>
-            )}
-          {!saving &&
-            !saved &&
-            !error && (
-              <React.Fragment>
-                <h1>{winnerFormat}</h1>
-                <div className="row">
-                  <div className="col">
-                    <SaveButton title="Save game" />
-                  </div>
-                  <div className="col">
-                    <ResetButton title="Start new game" />
-                  </div>
-                </div>
-              </React.Fragment>
-            )}
-        </div>
+        {!saving &&
+          !saved &&
+          !error && (
+            <React.Fragment>
+              <h3>{winnerFormat}</h3>
+              <SaveButton title="Save game" />
+              <ResetButton title="Start new game" />
+            </React.Fragment>
+          )}
       </React.Fragment>
     );
   }

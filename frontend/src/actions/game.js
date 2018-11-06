@@ -38,7 +38,7 @@ export function makeMove(cell) {
   return (dispatch, getState) => {
     // Update cell on board
     dispatch(updateCell(cell));
-    const { board, score } = getState().game;
+    const { board, borders, score } = getState().game;
     // Detect cycles
     const calculateCycle = dots.detectCycle(board, cell);
     // If there is a cycle - update current board and score
@@ -46,6 +46,10 @@ export function makeMove(cell) {
       calculateCycle.score = {
         red: score.red + calculateCycle.red,
         blue: score.blue + calculateCycle.blue
+      };
+      calculateCycle.borders = {
+        blue: [...borders.blue, ...calculateCycle.borders.blue],
+        red: [...borders.red, ...calculateCycle.borders.red]
       };
       dispatch(captureCells(calculateCycle));
     }

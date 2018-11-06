@@ -1,5 +1,5 @@
 import { store } from '../store';
-import headers from './helpers/headers';
+import headers from './helpers/requests';
 
 export const REMOVE_TOKEN = 'REMOVE_TOKEN';
 export const FETCH_TOKEN_BEGIN = 'FETCH_TOKEN_BEGIN';
@@ -32,7 +32,8 @@ export function removeToken() {
 
 function handleErrors(response) {
   if (!response.ok) {
-    throw Error(response.statusText);
+    const errorDetails = { message: response.statusText, status: response.status };
+    throw errorDetails;
   }
   return response.text();
 }
@@ -48,7 +49,6 @@ export function fetchToken(username, password, endpoint) {
         return data.token;
       })
       .catch(error => {
-        console.log(error);
         dispatch(fetchTokenError(error));
       });
   };

@@ -1,4 +1,5 @@
 import { Colors, HEIGTH, WIDTH } from './contstants';
+import { convertCoordsToPolygon } from './utils';
 
 const inside = require('robust-point-in-polygon');
 
@@ -49,7 +50,6 @@ const getAvailableNeighbors = (board, cell) => {
   // North West
   if (x > 0 && y > 0) neighbors.push(board[x - 1][y - 1]);
   const result = neighbors.filter(el => el.color === cell.color && !el.isCaptured);
-  // filter one more time if all neighbors are edges or captured
   return result;
 };
 
@@ -82,7 +82,9 @@ const detectCycleUtil = (
         return true;
         // If vertex is not visited && already in recursive stack && it's starter node
       }
-      if (recStack[currentNode.id] && currentNode.id === startNode.id) {
+      // if node in recStack and it is a starter node - cycle detected
+      // prevent cycle detection if cycle path length is only 3 points
+      if (recStack[currentNode.id] && currentNode.id === startNode.id && cyclePath.length > 3) {
         return true;
       }
     }
@@ -97,7 +99,7 @@ const detectCycle = (board, startNode) => {
   // get all cell's neighbors
   const starterNeighbors = getAvailableNeighbors(board, startNode);
   const possibleCycles = [];
-  const borders = [];
+  const borders = { blue: [], red: [] };
   const capturedPoints = [];
   const result = {
     board,
@@ -125,9 +127,9 @@ const detectCycle = (board, startNode) => {
     }
   });
 
-  // Sort possible cycles by lenght (bigger first)
+  // Sort possible cycles by length (smaller first)
   if (possibleCycles.length) {
-    possibleCycles.sort((a, b) => b.length - a.length);
+    possibleCycles.sort((a, b) => a.length - b.length);
     // For each cycle build polygon and check if polygon contains points of different color
     possibleCycles.forEach(cycle => {
       const polygon = cycle.map(el => [el.x, el.y]);
@@ -144,25 +146,27 @@ const detectCycle = (board, startNode) => {
       if (capturedByCycle.length) {
         if (
           // Check if polygon contains enemy cells
-          capturedByCycle.filter(
-            el => (el.color !== startNode.color || el.color === Colors.EMPTY) && !el.isCaptured
-          ).length
+          capturedByCycle.some(el => el.color !== startNode.color && !el.isCaptured)
         ) {
           cycle.forEach(el => {
             board[el.x][el.y].isVertex = true;
           });
           capturedByCycle.forEach(el => {
             capturedPoints.push(el);
-            board[el.x][el.y].isClickable = false;
-            board[el.x][el.y].isCaptured = true;
-            if (el.color !== Colors.EMPTY && el.color !== startNode.color)
+            if (el.color !== Colors.EMPTY && el.color !== startNode.color && !el.isCaptured)
               if (startNode.color === Colors.RED) {
                 result.red += 1;
               } else {
                 result.blue += 1;
               }
+            board[el.x][el.y].isClickable = false;
+            board[el.x][el.y].isCaptured = true;
           });
-          result.borders.push(polygon);
+          if (startNode.color === Colors.RED) {
+            result.borders.red.push(convertCoordsToPolygon(polygon));
+          } else {
+            result.borders.blue.push(convertCoordsToPolygon(polygon));
+          }
         }
       }
     });

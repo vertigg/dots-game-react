@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { startGame } from '../actions/game';
 import { CELL_THRESHOLD } from '../actions/helpers/contstants';
 import ResetButton from './buttons/ResetButton';
+import HistoryButton from './buttons/HistoryButton';
 
 class Score extends React.Component {
   render() {
@@ -15,6 +16,7 @@ class Score extends React.Component {
         <p>Red: {score.red}</p>
         <p>Next move: {currentPlayer}</p>
         <ResetButton title="Reset game" />
+        <HistoryButton />
       </div>
     );
   }

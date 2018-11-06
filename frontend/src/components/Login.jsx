@@ -23,7 +23,9 @@ class LoginPage extends React.Component {
     }
 
     this.props.login(username, password).then(() => {
-      this.props.history.push({ pathname: '/' });
+      if (!this.props.error) {
+        this.props.history.push({ pathname: '/' });
+      }
     });
   };
 
@@ -74,7 +76,11 @@ class LoginPage extends React.Component {
           Don&apos;t have an account? Make one <a href="/signup">here</a>
         </div>
         <span className="form-group has-errors text-muted small">
-          {error && <div className={'form-alert alert-danger'}>{error}</div>}
+          {error !== null && (
+            <div className={'form-alert alert-danger'}>
+              {error.status === 400 ? 'Invalid credentials' : `${error.message}`}
+            </div>
+          )}
         </span>
       </div>
     );
@@ -89,8 +95,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
   return {
-    loading: state.token.loading,
-    error: state.token.error
+    loading: state.authStatus.loading,
+    error: state.authStatus.error
   };
 }
 
