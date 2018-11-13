@@ -19,7 +19,7 @@ const createGrid = () => {
         id: key,
         isClickable: true,
         isCaptured: false,
-        isVertex: false
+        isVertex: false,
       };
       key += 1;
     }
@@ -60,7 +60,7 @@ const detectCycleUtil = (
   recStack,
   fromNode = null,
   startNode = null,
-  cyclePath
+  cyclePath,
 ) => {
   if (!visited[vertex.id]) {
     visited[vertex.id] = true;
@@ -107,7 +107,7 @@ const detectCycle = (board, startNode) => {
     borders,
     capturedPoints,
     red: 0,
-    blue: 0
+    blue: 0,
   };
 
   // for each neighbors we try to find cycles
@@ -178,5 +178,5 @@ const detectCycle = (board, startNode) => {
 export default {
   createGrid,
   detectCycle,
-  checkClickableCells
+  checkClickableCells,
 };

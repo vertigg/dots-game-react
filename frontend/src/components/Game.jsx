@@ -8,15 +8,17 @@ import Summary from './Summary';
 
 class Game extends React.Component {
   componentDidMount() {
-    this.props.startNewGame();
+    const { startNewGame } = this.props;
+    startNewGame();
   }
 
   render() {
+    const { isFinished } = this.props;
     return (
       <React.Fragment>
         <NavBar />
         <div className="container m-2 col-6 col-md-4 mw-100 d-flex justify-content-center">
-          <div className="left-control">{!this.props.isFinished ? <Score /> : <Summary />}</div>
+          <div className="left-control">{!isFinished ? <Score /> : <Summary />}</div>
           <div>
             <Board />
           </div>
@@ -28,7 +30,7 @@ class Game extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    startNewGame: () => dispatch(startGame())
+    startNewGame: () => dispatch(startGame()),
   };
 }
 
@@ -37,11 +39,11 @@ function mapStateToProps(state) {
     isFinished: state.game.isFinished,
     game: state.game,
     board: state.game.board,
-    player: state.game.player
+    player: state.game.player,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Game);

@@ -2,17 +2,17 @@ import {
   FETCH_TOKEN_BEGIN,
   FETCH_TOKEN_ERROR,
   FETCH_TOKEN_SUCCESS,
-  REMOVE_TOKEN
+  REMOVE_TOKEN,
 } from '../actions/auth';
 
 const initialTokenState = {
-  value: null
+  value: null,
 };
 
 const initialAuthState = {
   value: null,
   loading: false,
-  error: null
+  error: null,
 };
 
 export const token = (state = initialTokenState, { type, data }) => {
@@ -20,7 +20,7 @@ export const token = (state = initialTokenState, { type, data }) => {
     case FETCH_TOKEN_SUCCESS:
       return {
         ...state,
-        value: data.token
+        value: data.token,
       };
     case REMOVE_TOKEN:
       return { ...state, value: null };
@@ -35,18 +35,18 @@ export const authStatus = (state = initialAuthState, { type, data }) => {
       return {
         ...state,
         loading: true,
-        error: null
+        error: null,
       };
     case FETCH_TOKEN_SUCCESS:
       return {
         ...state,
-        loading: false
+        loading: false,
       };
     case FETCH_TOKEN_ERROR:
       return {
         ...state,
         loading: false,
-        error: data
+        error: data,
       };
 
     case REMOVE_TOKEN:

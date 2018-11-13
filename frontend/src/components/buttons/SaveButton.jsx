@@ -1,24 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { saveGamePost } from '../../actions/history';
 
-class SaveButton extends Component {
-  render() {
-    return (
-      <button onClick={this.props.saveGame} className="btn btn-secondary form-control">
-        {this.props.title}
-      </button>
-    );
-  }
-}
+const SaveButton = ({ saveGame, title }) => (
+  <button type="button" onClick={saveGame} className="btn btn-secondary form-control">
+    {title}
+  </button>
+);
 
 function mapDispatchToProps(dispatch) {
   return {
-    saveGame: () => dispatch(saveGamePost())
+    saveGame: () => dispatch(saveGamePost()),
   };
 }
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SaveButton);

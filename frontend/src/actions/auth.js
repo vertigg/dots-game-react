@@ -11,22 +11,22 @@ export function isLoggedIn() {
 }
 
 export const fetchTokenBegin = () => ({
-  type: FETCH_TOKEN_BEGIN
+  type: FETCH_TOKEN_BEGIN,
 });
 
 export const fetchTokenSuccess = token => ({
   type: FETCH_TOKEN_SUCCESS,
-  data: { token }
+  data: { token },
 });
 
 export const fetchTokenError = error => ({
   type: FETCH_TOKEN_ERROR,
-  data: error
+  data: error,
 });
 
 export function removeToken() {
   return {
-    type: REMOVE_TOKEN
+    type: REMOVE_TOKEN,
   };
 }
 

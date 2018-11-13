@@ -2,12 +2,16 @@ import React, { Component } from 'react';
 import { Colors } from '../actions/helpers/contstants';
 
 class Border extends Component {
-  getClassName = () => (this.props.color === Colors.RED ? 'border-red' : 'border-blue');
+  getClassName = () => {
+    const { color } = this.props;
+    return color === Colors.RED ? 'border-red' : 'border-blue';
+  };
 
   render() {
+    const { coords } = this.props;
     return (
       <svg className="borders">
-        <polygon points={this.props.coords} className={this.getClassName()} />
+        <polygon points={coords} className={this.getClassName()} />
       </svg>
     );
   }

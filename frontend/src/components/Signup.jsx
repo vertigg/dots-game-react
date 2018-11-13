@@ -10,7 +10,7 @@ class SignupPage extends React.Component {
       username: '',
       password1: '',
       password2: '',
-      submitted: false
+      submitted: false,
     };
   }
 
@@ -23,13 +23,14 @@ class SignupPage extends React.Component {
     event.preventDefault();
     this.setState({ submitted: true });
     const { username, password1, password2 } = this.state;
+    const { signup, error, history } = this.props;
     if (!(username && password1) || password1 !== password2 || password1.length <= 5) {
       return;
     }
 
-    this.props.signup(username, password1).then(() => {
-      if (!this.props.error) {
-        this.props.history.push({ pathname: '/' });
+    signup(username, password1).then(() => {
+      if (!error) {
+        history.push({ pathname: '/' });
       }
     });
   };
@@ -44,14 +45,14 @@ class SignupPage extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
             <div className="form-group">
-              <label className="form-control-label" htmlFor="username">
+              <span className="form-control-label" htmlFor="username">
                 Username
-              </label>
+              </span>
               <input
                 className={`form-control ${submitted && !username ? 'is-invalid' : ''}`}
                 type="text"
                 name="username"
-                value={this.state.username}
+                value={username}
                 onChange={this.handleChange}
               />
               {submitted &&
@@ -60,43 +61,43 @@ class SignupPage extends React.Component {
                 )}
             </div>
             <div className="form-group">
-              <label className="form-control-label" htmlFor="password1">
+              <span label="lel" className="form-control-label" htmlFor="password1">
                 Password
-              </label>
+              </span>
               <input
                 className={`form-control ${
                   submitted && password1 !== password2 ? 'is-invalid' : ''
                 }`}
                 type="password"
                 name="password1"
-                value={this.state.password1}
+                value={password1}
                 onChange={this.handleChange}
               />
               {submitted &&
                 password1.length <= 5 &&
                 password1.length > 0 && (
-                  <ul id="passwordHelpInline" className={'text-danger small'}>
+                  <ul id="passwordHelpInline" className="text-danger small">
                     Password is too short
                   </ul>
                 )}
               {submitted &&
                 password1 !== password2 && (
-                  <ul id="passwordHelpInline" className={'text-danger small'}>
+                  <ul id="passwordHelpInline" className="text-danger small">
                     Passwords don&apos;t match
                   </ul>
                 )}
             </div>
             <div className="form-group">
-              <label className="form-control-label" htmlFor="password2">
+              <span className="form-control-label" htmlFor="password2">
                 Confirm password
-              </label>
+              </span>
               <input
                 className={`form-control ${
                   submitted && password1 !== password2 ? 'is-invalid' : ''
                 }`}
                 type="password"
                 name="password2"
-                value={this.state.password2}
+                value={password2}
                 onChange={this.handleChange}
               />
             </div>
@@ -105,7 +106,7 @@ class SignupPage extends React.Component {
         </form>
         <span className="form-group has-errors text-muted small">
           {error !== null && (
-            <div className={'form-alert alert-danger'}>
+            <div className="form-alert alert-danger">
               {error.status === 400 ? 'User already exists' : `${error.message}`}
             </div>
           )}
@@ -117,18 +118,18 @@ class SignupPage extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    signup: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.signup))
+    signup: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.signup)),
   };
 }
 
 function mapStateToProps(state) {
   return {
     loading: state.authStatus.loading,
-    error: state.authStatus.error
+    error: state.authStatus.error,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(SignupPage);

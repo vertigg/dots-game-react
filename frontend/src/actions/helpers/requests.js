@@ -5,7 +5,7 @@ function apiGet() {
   if (token.value !== null) {
     return {
       method: 'GET',
-      headers: { Authorization: `Token ${token.value}` }
+      headers: { Authorization: `Token ${token.value}` },
     };
   }
   return {};
@@ -19,9 +19,9 @@ function apiPost(body) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Token ${token.value}`
+        Authorization: `Token ${token.value}`,
       },
-      body
+      body,
     };
   }
   return {};
@@ -31,12 +31,12 @@ function authorization(username, password) {
   return {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, password }),
   };
 }
 
 export default {
   authorization,
   apiPost,
-  apiGet
+  apiGet,
 };

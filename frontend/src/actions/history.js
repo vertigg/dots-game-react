@@ -20,7 +20,7 @@ export const saveGameBegin = () => ({ type: SAVE_GAME_BEGIN });
 export const saveGameSuccess = () => ({ type: SAVE_GAME_SUCCESS });
 export const saveGameError = error => ({
   type: SAVE_GAME_ERROR,
-  data: error
+  data: error,
 });
 
 function handleErrors(response) {
@@ -58,7 +58,7 @@ export function saveGamePost(endpoint) {
       winner: game.winner,
       score: game.score,
       startedAt: game.startedAt,
-      endedAt: game.endedAt
+      endedAt: game.endedAt,
     };
     return fetch(apiEndpoints.history, headers.apiPost(JSON.stringify(body)))
       .then(handleErrors)

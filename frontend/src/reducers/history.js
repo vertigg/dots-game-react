@@ -5,7 +5,7 @@ import {
   SAVE_GAME_RESET,
   RETRIEVE_HISTORY_BEGIN,
   RETRIEVE_HISTORY_SUCCESS,
-  RETRIEVE_HISTORY_ERROR
+  RETRIEVE_HISTORY_ERROR,
 } from '../actions/history';
 
 const initialState = {
@@ -13,7 +13,7 @@ const initialState = {
   loading: false,
   saving: false,
   saved: false,
-  error: null
+  error: null,
 };
 
 const history = (state = initialState, { type, data }) => {

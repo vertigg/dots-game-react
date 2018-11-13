@@ -9,28 +9,28 @@ export const END_GAME = 'END_GAME';
 
 export function startGame() {
   return {
-    type: START_GAME
+    type: START_GAME,
   };
 }
 
 export function updateCell(data) {
   return {
     type: UPDATE_CELL,
-    data
+    data,
   };
 }
 
 export function captureCells(data) {
   return {
     type: CAPTURE_CELLS,
-    data
+    data,
   };
 }
 
 export function endGame(data) {
   return {
     type: END_GAME,
-    data
+    data,
   };
 }
 
@@ -45,11 +45,11 @@ export function makeMove(cell) {
     if (calculateCycle.success) {
       calculateCycle.score = {
         red: score.red + calculateCycle.red,
-        blue: score.blue + calculateCycle.blue
+        blue: score.blue + calculateCycle.blue,
       };
       calculateCycle.borders = {
         blue: [...borders.blue, ...calculateCycle.borders.blue],
-        red: [...borders.red, ...calculateCycle.borders.red]
+        red: [...borders.red, ...calculateCycle.borders.red],
       };
       dispatch(captureCells(calculateCycle));
     }

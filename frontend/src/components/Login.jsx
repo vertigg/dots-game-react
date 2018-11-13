@@ -10,7 +10,7 @@ class LoginPage extends React.Component {
     this.state = {
       username: '',
       password: '',
-      submitted: false
+      submitted: false,
     };
   }
 
@@ -18,13 +18,14 @@ class LoginPage extends React.Component {
     event.preventDefault();
     this.setState({ submitted: true });
     const { username, password } = this.state;
+    const { login, error, history } = this.props;
     if (!(username && password)) {
       return;
     }
 
-    this.props.login(username, password).then(() => {
-      if (!this.props.error) {
-        this.props.history.push({ pathname: '/' });
+    login(username, password).then(() => {
+      if (!error) {
+        history.push({ pathname: '/' });
       }
     });
   };
@@ -43,26 +44,26 @@ class LoginPage extends React.Component {
         <h1 className="display-4 text-center">Login</h1>
         <form onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <label className="form-control-label" htmlFor="username">
+            <span className="form-control-label" htmlFor="username">
               Username
-            </label>
+            </span>
             <input
               className={`form-control ${submitted && !username ? 'is-invalid' : ''}`}
               type="text"
               name="username"
-              value={this.state.username}
+              value={username}
               onChange={this.handleChange}
             />
             {submitted &&
               !username && <div className="form-group text-danger small">Username is required</div>}
           </div>
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <span htmlFor="password">Password</span>
             <input
               className={`form-control ${submitted && !password ? 'is-invalid' : ''}`}
               type="password"
               name="password"
-              value={this.state.password}
+              value={password}
               onChange={this.handleChange}
             />
             {submitted &&
@@ -77,7 +78,7 @@ class LoginPage extends React.Component {
         </div>
         <span className="form-group has-errors text-muted small">
           {error !== null && (
-            <div className={'form-alert alert-danger'}>
+            <div className="form-alert alert-danger">
               {error.status === 400 ? 'Invalid credentials' : `${error.message}`}
             </div>
           )}
@@ -89,18 +90,18 @@ class LoginPage extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    login: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.login))
+    login: (username, password) => dispatch(fetchToken(username, password, apiEndpoints.login)),
   };
 }
 
 function mapStateToProps(state) {
   return {
     loading: state.authStatus.loading,
-    error: state.authStatus.error
+    error: state.authStatus.error,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(LoginPage);

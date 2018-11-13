@@ -4,13 +4,6 @@ import { Colors } from '../actions/helpers/contstants';
 import { makeMove } from '../actions/game';
 
 class Cell extends Component {
-  handleClick = () => {
-    const { cell } = this.props;
-    if (!cell.isClickable || this.props.isFinished) return;
-    this.setState({ isClickable: cell.isClickable });
-    this.props.makeMove(cell);
-  };
-
   getComponentClasses() {
     const { cell } = this.props;
     let styleClasses = '';
@@ -23,10 +16,21 @@ class Cell extends Component {
     return styleClasses;
   }
 
+  handleClick = () => {
+    const { cell, isFinished, moveOnClick } = this.props;
+    if (!cell.isClickable || isFinished) return;
+    moveOnClick(cell);
+  };
+
   render() {
     return (
       <div className="cell-wrapper">
-        <div className={this.getComponentClasses()} onClick={this.handleClick} />
+        <div
+          role="presentation"
+          className={this.getComponentClasses()}
+          onClick={this.handleClick}
+          onKeyDown={this.handleClick}
+        />
       </div>
     );
   }
@@ -34,17 +38,17 @@ class Cell extends Component {
 
 function mapStateToProps(state) {
   return {
-    isFinished: state.game.isFinished
+    isFinished: state.game.isFinished,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    makeMove: cell => dispatch(makeMove(cell))
+    moveOnClick: cell => dispatch(makeMove(cell)),
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(Cell);

@@ -7,11 +7,14 @@ import { removeToken } from '../actions/auth';
 
 class History extends Component {
   componentDidMount() {
-    this.props.retrieveHistory();
+    const { getHistory } = this.props;
+    getHistory();
   }
 
   render() {
-    const { games, loading, error } = this.props.history;
+    const {
+      history: { games, loading, error },
+    } = this.props;
     return (
       <React.Fragment>
         <NavBar />
@@ -50,18 +53,18 @@ class History extends Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    retrieveHistory: () => dispatch(retrieveHistory()),
-    logout: () => dispatch(removeToken())
+    getHistory: () => dispatch(retrieveHistory()),
+    logout: () => dispatch(removeToken()),
   };
 }
 
 function mapStateToProps(state) {
   return {
-    history: state.history
+    history: state.history,
   };
 }
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(History);

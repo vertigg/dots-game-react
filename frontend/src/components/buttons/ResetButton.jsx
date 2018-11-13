@@ -1,24 +1,20 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { startGame } from '../../actions/game';
 
-class ResetButton extends Component {
-  render() {
-    return (
-      <button className="btn btn-secondary form-control" onClick={this.props.startNewGame}>
-        {this.props.title}
-      </button>
-    );
-  }
-}
+const ResetButton = ({ startNewGame, title }) => (
+  <button type="button" className="btn btn-secondary form-control" onClick={startNewGame}>
+    {title}
+  </button>
+);
 
 function mapDispatchToProps(dispatch) {
   return {
-    startNewGame: () => dispatch(startGame())
+    startNewGame: () => dispatch(startGame()),
   };
 }
 
 export default connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 )(ResetButton);

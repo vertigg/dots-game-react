@@ -11,7 +11,7 @@ const initialGameState = {
   score: { red: 0, blue: 0 },
   startedAt: null,
   endedAt: null,
-  winner: 0
+  winner: 0,
 };
 
 export default (state = initialGameState, { type, data }) => {
@@ -26,7 +26,7 @@ export default (state = initialGameState, { type, data }) => {
         score: { red: 0, blue: 0 },
         startedAt: Math.round(Date.now() / 1000),
         winner: 0,
-        endedAt: null
+        endedAt: null,
       };
     case END_GAME:
       return {
@@ -34,16 +34,16 @@ export default (state = initialGameState, { type, data }) => {
         isFinished: true,
         endedAt: Math.round(Date.now() / 1000),
         board: state.board.map(row =>
-          row.map(cell => (cell.isClickable ? { ...cell, isClickable: false } : cell))
+          row.map(cell => (cell.isClickable ? { ...cell, isClickable: false } : cell)),
         ),
-        winner: data
+        winner: data,
       };
     case CAPTURE_CELLS: {
       return {
         ...state,
         score: data.score,
         borders: data.borders,
-        board: data.board
+        board: data.board,
       };
     }
     case UPDATE_CELL: {
@@ -55,9 +55,9 @@ export default (state = initialGameState, { type, data }) => {
         board: state.board.map(row =>
           row.map(
             cell =>
-              cell.id === data.id ? { ...cell, isClickable: false, color: state.player } : cell
-          )
-        )
+              cell.id === data.id ? { ...cell, isClickable: false, color: state.player } : cell,
+          ),
+        ),
       };
     }
     default:

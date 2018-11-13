@@ -7,7 +7,7 @@ import rootReducer from '../reducers';
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['token']
+  whitelist: ['token'],
 };
 
 const pReducer = persistReducer(persistConfig, rootReducer);
@@ -18,8 +18,8 @@ function configureStore(initialState) {
     initialState,
     compose(
       applyMiddleware(thunk),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
-    )
+      window.devToolsExtension ? window.devToolsExtension() : f => f,
+    ),
   );
 }
 

@@ -7,7 +7,7 @@ const appReducer = combineReducers({
   authStatus,
   token,
   game,
-  history
+  history,
 });
 
 const rootReducer = (state, action) => appReducer(state, action);
