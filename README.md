@@ -10,3 +10,7 @@ Implementation of [Dots](<https://en.wikipedia.org/wiki/Dots_(game)>) game using
 4. Build React app `npm run build`
 5. Migrate in Django `cd .. && pipenv run python manage.py migrate`
 6. Start dev server `pipenv run python manage.py runserver`
+
+## Live demo
+
+[Live demo URL](https://epicvertigo.xyz/games/dots/)
