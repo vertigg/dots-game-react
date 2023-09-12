@@ -5,3 +5,4 @@ datadump.json
 node_modules/
 .eslintrc.json
 .prettierrc
+.venv

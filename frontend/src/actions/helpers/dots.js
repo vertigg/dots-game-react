@@ -1,7 +1,6 @@
+import robustPointInPolygon from 'robust-point-in-polygon';
 import { Colors, HEIGTH, WIDTH } from './contstants';
 import { convertCoordsToPolygon } from './utils';
-
-const inside = require('robust-point-in-polygon');
 
 const checkClickableCells = board => board.some(row => row.some(el => el.isClickable === true));
 
@@ -137,7 +136,7 @@ const detectCycle = (board, startNode) => {
       // Check if polygon contains cells
       board.forEach(row => {
         row.forEach(point => {
-          if (inside(polygon, [point.x, point.y]) === -1) {
+          if (robustPointInPolygon(polygon, [point.x, point.y]) === -1) {
             capturedByCycle.push(point);
           }
         });
